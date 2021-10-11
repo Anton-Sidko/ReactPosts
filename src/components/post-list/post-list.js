@@ -1,10 +1,11 @@
 import React from "react";
-import { ListGroup } from 'reactstrap';
 
 import PostListItem from '../post-list-item';
-import './post-list.css';
+import './post-list.sass';
 
-const PostList = ({posts}) => {
+const PostList = ({ posts,
+                    onDelete = Function.prototype,
+                    changeStatus = Function.prototype }) => {
 
     const elements = posts.map(item => {
         const {
@@ -14,15 +15,19 @@ const PostList = ({posts}) => {
 
         return (
             <li className="list-group-item" key={id}>
-                <PostListItem {...itemProps}/>
+                <PostListItem
+                    {...itemProps}
+                    onDelete={() => onDelete(id)}
+                    changeStatus={(event) => changeStatus(id, event)}
+                />
             </li>
         )
     });
 
     return (
-        <ListGroup className="app-list">
+        <ul className="app-list">
             {elements}
-        </ListGroup>
+        </ul>
     )
 }
 

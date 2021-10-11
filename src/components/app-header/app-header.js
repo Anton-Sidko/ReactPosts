@@ -1,31 +1,19 @@
 import React from "react";
 
-import './app-header.css';
-import styled from 'styled-components';
+import './app-header.sass';
 
-const Header = styled.div`
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    h1 {
-        font-size: 26px;
-        color: ${props => props.colored ? 'green' : 'black'};
-        :hover {
-            color: blue;
-        }
-    }
-    h2 {
-        font-size: 1.2rem;
-        color: grey;
-    }
-`
-
-const AppHeader = () => {
+const AppHeader = ({countPosts, likedPosts}) => {
     return (
-        <Header>
+        <div className="app-header">
             <h1>Антон Сидько</h1>
-            <h2>5 записей, из них понравилось 0</h2>
-        </Header>
+            <h2>{countPosts} {(!countPosts
+                                ? 'записей'
+                                : countPosts === 1
+                                ? 'запись'
+                                : countPosts > 1 && countPosts < 5
+                                ? 'записи' : 'записей')
+            }, из них понравилось {likedPosts}</h2>
+        </div>
     )
 }
 

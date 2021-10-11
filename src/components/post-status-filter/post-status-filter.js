@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from 'reactstrap';
 
-import './post-status-filter.css';
+import './post-status-filter.sass';
 
 const PostStatusFilter = () => {
     return (

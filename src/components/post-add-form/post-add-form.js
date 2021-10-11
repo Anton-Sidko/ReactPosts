@@ -1,10 +1,10 @@
 import React from "react";
 
-import './post-add-form.css';
+import './post-add-form.sass';
 
-const PostAddForm = () => {
+const PostAddForm = ({onAdd}) => {
     return (
-        <form className="bottom-panel d-flex">
+        <div className="bottom-panel d-flex">
             <input
                 type="text"
                 className="form-control new-post-label"
@@ -13,10 +13,11 @@ const PostAddForm = () => {
             <button
                 type="submit"
                 className="btn btn-outline-secondary"
+                onClick={() => onAdd('Hello')}
             >
                 Добавить
             </button>
-        </form>
+        </div>
     )
 }
 
