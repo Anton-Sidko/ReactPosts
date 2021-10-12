@@ -1,2 +1,2 @@
-Training React project for site with posting some simple posts <br>
+Training React project for simple notebook, todo list<br>
 Link to GitHub Pages:

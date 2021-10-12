@@ -5,7 +5,7 @@ import './app-header.sass';
 const AppHeader = ({countPosts, likedPosts}) => {
     return (
         <div className="app-header">
-            <h1>Антон Сидько</h1>
+            <h1>Записная книжка</h1>
             <h2>{countPosts} {(!countPosts
                                 ? 'записей'
                                 : countPosts === 1

@@ -16,23 +16,18 @@ export default class App extends React.Component {
                 {
                     id: Math.random(),
                     label: 'Изучаю React',
-                    important: false,
-                    like: false
                 },
                 {
                     id: Math.random(),
                     label: 'Делаю учебное приложение',
-                    important: false,
-                    like: false
                 },
                 {
                     id: Math.random(),
-                    label: 'Я люблю узнавать что-то новое',
-                    important: false,
-                    like: false
+                    label: 'Это простая записная книжка, в которую можно добавлять задачи/записи',
                 }
             ],
-            likedPosts: 0
+            searchItem: '',
+            filter: 'all'
         }
     }
 
@@ -42,7 +37,7 @@ export default class App extends React.Component {
                 return {
                     data: JSON.parse(localStorage.getItem('posts'))
                 }
-            }, () => this.countLiked())
+            })
         }
     }
 
@@ -60,7 +55,6 @@ export default class App extends React.Component {
     addItem = (text) => {
         const newItem = {
             label: text,
-            important: false,
             id: Math.random()
         }
 
@@ -73,38 +67,22 @@ export default class App extends React.Component {
         }, () => localStorage.setItem('posts', JSON.stringify(this.state.data)))
     }
 
-    countLiked = () => {
-        let count = 0;
-        this.setState(({data}) => {
-            data.forEach(elem => {
-                if (elem.like === true) {
-                    count += 1;
-                }
-            })
-
-            return {
-                ...data,
-                likedPosts: count
-            }
-        })
-    }
-
-    changeStatus = (id, event) => {
+    onToggleStatus = (id, event) => {
 
         this.setState(({data}) => {
             const index = data.findIndex(elem => elem.id === id);
             const target = event.target;
             let changeElem = data[index];
+            //Можно переписать свойство используя spred оператор
+            //const newItem = {...changeElem, like: !changeElem.like}
 
             if (target.classList.contains('fa-star')) {
                 changeElem.important = !changeElem.important;
             } else if (target.classList.contains('app-list-item-label')) {
                 changeElem.like = !changeElem.like;
-                this.countLiked();
             }
 
             const postsArr = [...data.slice(0, index), {...changeElem},...data.slice(index+1)];
-
 
             return {
                 data: postsArr
@@ -112,21 +90,61 @@ export default class App extends React.Component {
         }, () => localStorage.setItem('posts', JSON.stringify(this.state.data)))
     }
 
+    searchPost(items, searchItem) {
+        if (!searchItem.length) {
+            return items
+        }
+
+        return items.filter((item) => {
+            return item.label.includes(searchItem)
+        })
+    }
+
+    filterPost(items, filter) {
+        if (filter === 'like') {
+            return items.filter((item) => item.like)
+        }
+
+        if (filter === 'all') {
+            return items
+        }
+    }
+
+    onUpdateSearch = (searchItem) => {
+        this.setState({searchItem});
+    }
+
+    onFilterSelect = (filter) => {
+        this.setState({filter});
+    }
+
     render() {
+        const {
+                data,
+                searchItem,
+                filter} = this.state;
+
+                const likedPosts = data.filter(item => item.like).length;
+        const countPosts = data.length;
+        const visiblePosts = this.filterPost(this.searchPost(data, searchItem), filter);
+
         return (
             <div className="app">
                 <AppHeader
-                    countPosts = {this.state.data.length}
-                    likedPosts = {this.state.likedPosts}
+                    countPosts = {countPosts}
+                    likedPosts = {likedPosts}
                 />
                 <div className="search-panel d-flex">
-                    <SearchPanel />
-                    <PostStatusFilter />
+                    <SearchPanel onUpdateSearch={this.onUpdateSearch}/>
+                    <PostStatusFilter
+                        filter={filter}
+                        onFilterSelect={this.onFilterSelect}
+                    />
                 </div>
                 <PostList
-                    posts={this.state.data}
+                    posts={visiblePosts}
                     onDelete={this.deleteItem}
-                    changeStatus={this.changeStatus}
+                    onToggleStatus={this.onToggleStatus}
                 />
                 <PostAddForm
                     onAdd={this.addItem}

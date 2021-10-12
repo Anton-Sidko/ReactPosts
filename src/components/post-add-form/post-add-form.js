@@ -2,23 +2,56 @@ import React from "react";
 
 import './post-add-form.sass';
 
-const PostAddForm = ({onAdd}) => {
-    return (
-        <div className="bottom-panel d-flex">
-            <input
-                type="text"
-                className="form-control new-post-label"
-                placeholder="О чем вы думаете сейчас?"
-            />
-            <button
-                type="submit"
-                className="btn btn-outline-secondary"
-                onClick={() => onAdd('Hello')}
-            >
-                Добавить
-            </button>
-        </div>
-    )
-}
+export default class PostAddForm extends React.Component {
+    constructor(props) {
+        super(props);
 
-export default PostAddForm;
+        this.state = {
+            text: ''
+        }
+    }
+
+    onValueChange = (event) => {
+        this.setState({
+            text: event.target.value
+        })
+    }
+
+    handleSubmit = (event) => {
+        event.preventDefault();
+
+        const post = this.state.text;
+        const {onAdd} = this.props;
+
+        if (post) {
+            onAdd(post);
+        }
+
+        this.setState({
+            text: ''
+        })
+    }
+
+    render() {
+        return (
+            <form
+                className="bottom-panel d-flex"
+                onSubmit={this.handleSubmit}
+            >
+                <input
+                    type="text"
+                    className="form-control new-post-label"
+                    placeholder="О чем вы думаете сейчас?"
+                    onChange={this.onValueChange}
+                    value={this.state.text}
+                />
+                <button
+                    type="submit"
+                    className="btn btn-outline-secondary"
+                >
+                    Добавить
+                </button>
+            </form>
+        )
+    }
+}

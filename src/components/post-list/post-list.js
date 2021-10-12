@@ -5,7 +5,7 @@ import './post-list.sass';
 
 const PostList = ({ posts,
                     onDelete = Function.prototype,
-                    changeStatus = Function.prototype }) => {
+                    onToggleStatus = Function.prototype }) => {
 
     const elements = posts.map(item => {
         const {
@@ -18,7 +18,7 @@ const PostList = ({ posts,
                 <PostListItem
                     {...itemProps}
                     onDelete={() => onDelete(id)}
-                    changeStatus={(event) => changeStatus(id, event)}
+                    onToggleStatus={(event) => onToggleStatus(id, event)}
                 />
             </li>
         )

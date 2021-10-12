@@ -8,7 +8,7 @@ const PostListItem = (props) => {
             important,
             like,
             onDelete,
-            changeStatus} = props;
+            onToggleStatus} = props;
 
     let classNames = 'app-list-item d-flex justify-content-between';
     if (important) {
@@ -22,7 +22,7 @@ const PostListItem = (props) => {
         <div className={classNames}>
             <span
                 className="app-list-item-label"
-                onClick={changeStatus}
+                onClick={onToggleStatus}
             >
                 {label}
             </span>
@@ -30,7 +30,7 @@ const PostListItem = (props) => {
                 <button
                     className="btn-star btn-sm"
                     type="button"
-                    onClick={changeStatus}
+                    onClick={onToggleStatus}
                 >
                     <i className="fa fa-star"></i>
                 </button>
